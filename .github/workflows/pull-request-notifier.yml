@@ -1,0 +1,37 @@
+name: Create a Pull Request
+
+on:
+    push:
+        branches-ignore:
+            - master
+
+jobs:
+  open-pull-request:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read        # It only needs to read your code
+      pull-requests: write  # Critical: allows it to create the PR
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 1. Check if a PR already exists for this branch
+          existing_pr=$(gh pr list --head ${{ github.ref_name }} --json url --jq '.[0].url')
+          
+          if [ -n "$existing_pr" ]; then
+            echo "PR already exists: $existing_pr"
+            exit 0
+          fi
+
+          # 2. If not, create the PR
+          gh pr create \
+            --base master \
+            --head ${{ github.ref_name }} \
+            --title "Auto-PR: ${{ github.ref_name }}" \
+            --body "This PR was automatically created by GitHub Actions."
+            
