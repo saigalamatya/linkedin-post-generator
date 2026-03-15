@@ -9,7 +9,7 @@ jobs:
   open-pull-request:
     runs-on: ubuntu-latest
     permissions:
-      contents: read        # It only needs to read your code
+      contents: write        # It only needs to read your code
       pull-requests: write  # Critical: allows it to create the PR
       
     steps:
