@@ -34,4 +34,3 @@ jobs:
             --head ${{ github.ref_name }} \
             --title "Auto-PR: ${{ github.ref_name }}" \
             --body "This PR was automatically created by GitHub Actions."
-            
